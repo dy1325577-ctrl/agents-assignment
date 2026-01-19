@@ -2,7 +2,7 @@ import os
 import logging
 from dotenv import load_dotenv
 
-# We still load dotenv just in case, but we will override with hardcoded keys below
+
 load_dotenv()
 
 from livekit.plugins.turn_detector.multilingual import MultilingualModel
@@ -15,7 +15,7 @@ from livekit.agents import (
     JobProcess,
     MetricsCollectedEvent,
     RunContext,
-    WorkerOptions,  # Added WorkerOptions import
+    WorkerOptions,  
     cli,
     metrics,
     room_io,
@@ -26,7 +26,7 @@ import asyncio
 logger = logging.getLogger("intelligent-interruption-agent")
 logger.setLevel(logging.INFO)
 
-# --- Configuration Constants ---
+
 IGNORE_WORDS = {
     "yeah", "ok", "okay", "hmm", "right", "uhh", "uh", "uh-huh", "aha",
     "yep", "yup", "mhm",
@@ -36,7 +36,7 @@ INTERRUPT_WORDS = {
     "stop", "wait", "no", "cancel", "hold", "pause", "hang on", "hold on"
 }
 
-# --- Helper Functions ---
+
 def normalize_text(text: str) -> str:
     """Normalize text for comparison: lowercase, remove punctuation"""
     normalized = text.lower().strip()
@@ -90,7 +90,7 @@ def should_interrupt(text: str, agent_was_speaking: bool) -> bool:
     logger.info(f"🛑 INTERRUPT: Active input detected '{text}'")
     return True
 
-# --- Agent Class ---
+
 class IntelligentAgent(Agent):
     def __init__(self) -> None:
         super().__init__(
@@ -113,7 +113,7 @@ class IntelligentAgent(Agent):
         logger.info(f"Weather lookup requested for: {location}")
         return f"The weather in {location} is sunny with a temperature of 70 degrees Fahrenheit."
 
-# --- Server Setup ---
+
 def prewarm(proc: JobProcess):
     logger.info("Prewarming: Loading VAD model...")
     proc.userdata["vad"] = silero.VAD.load()
@@ -218,7 +218,7 @@ async def entrypoint(ctx: JobContext):
         ),
     )
 
-# --- Main Execution Block ---
+
 if __name__ == "__main__":
     logger.info("=" * 60)
     logger.info("LiveKit Intelligent Interruption Agent")
@@ -228,11 +228,11 @@ if __name__ == "__main__":
     logger.info("=" * 60)
 
     # --- HARDCODED KEYS ---
-    # These keys are passed directly to WorkerOptions to bypass the .env file
+    # These keys are passed directly to WorkerOptions to bypass the .env file another way i am using for api calling
     options = WorkerOptions(
         entrypoint_fnc=entrypoint,
         prewarm_fnc=prewarm,
-        ws_url="wss://dhruvvoice-q9q62uoi.livekit.cloud",      # Your WebSocket URL
+        ws_url="wss://dhruvvoice-q9q62uoi.livekit.cloud",      # Your URL
         api_key="APIUR9gyZpNftXw",                             # Your API Key
         api_secret="kMSCxwFuyBeOolYJrz4rxdL0BHkqCXCZ9Xq9A3ShhoE" # Your API Secret
     )
